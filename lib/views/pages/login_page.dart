@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sky_lovers/controllers/auth_controller.dart';
-import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
@@ -19,23 +17,19 @@ class LoginPage extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MaterialButton(
-              child: const Text('Iniciar sesión con Google'),
-              onPressed: () async {
-                User? user = await AuthController().loginWithGoogle();
-                print(user?.displayName);
-              }
-
-            ),
+                child: const Text('Iniciar sesión con Google'),
+                onPressed: () async {
+                  User? user = await AuthController().loginWithGoogle();
+                  print(user?.displayName);
+                }),
             MaterialButton(
-              child: const Text('Cerrar sesion'),
-              onPressed: () {
-                AuthController().signOut();
-              }
-            )
+                child: const Text('Cerrar sesion'),
+                onPressed: () {
+                  AuthController().signOut();
+                })
           ],
         ),
       ),
     );
   }
-
 }

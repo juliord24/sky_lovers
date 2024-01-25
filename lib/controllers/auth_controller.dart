@@ -1,17 +1,11 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import '../services/auth_service.dart';
-import 'package:get/get.dart';
-
-import '../views/pages/login_page.dart';
 
 final authService = AuthService();
 
-
 class AuthController {
-  /// Usa el método [signInWithGoogle] de la clase [AuthService] para iniciar sesión con Google
+  ///Llama al método [signInWithGoogle] de la clase [AuthService] y controla la lógica de inicio de sesión
   Future<User?> loginWithGoogle() async {
     User? user = await authService.signInWithGoogle();
     if (user != null) {
@@ -21,8 +15,10 @@ class AuthController {
       // Error en el inicio de sesión
       print('Error en el inicio de sesión');
     }
+    return null;
   }
 
+  ///Llama al método [signOut] de la clase [AuthService] y controla la lógica de cierre de sesión
   signOut() async {
     await authService.signOut();
   }
