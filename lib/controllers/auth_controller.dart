@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 import '../services/auth_service.dart';
 
@@ -9,8 +10,8 @@ class AuthController {
   Future<User?> loginWithGoogle() async {
     User? user = await authService.signInWithGoogle();
     if (user != null) {
-      // El usuario ha iniciado sesión correctamente, navegar a la pantalla principal
       print('Inicio de sesión exitoso: ${user.displayName}');
+      Get.toNamed('/home');
     } else {
       // Error en el inicio de sesión
       print('Error en el inicio de sesión');

@@ -20,7 +20,6 @@ class LoginPage extends StatelessWidget {
                 child: const Text('Iniciar sesión con Google'),
                 onPressed: () async {
                   User? user = await AuthController().loginWithGoogle();
-                  print(user?.displayName);
                 }),
             MaterialButton(
                 child: const Text('Cerrar sesion'),

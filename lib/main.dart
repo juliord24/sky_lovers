@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sky_lovers/views/pages/home_page.dart';
 import 'package:sky_lovers/views/pages/login_page.dart';
+import 'package:get/get.dart';
 
 import 'firebase_options.dart';
 
@@ -19,7 +21,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const MyApp()),
+        GetPage(name: '/home', page: () => const HomePage()),
+      ],
       title: 'skyLovers',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
