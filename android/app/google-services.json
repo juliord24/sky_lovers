@@ -12,7 +12,20 @@
           "package_name": "io.github.juliord24.nombreapp.sky_lovers"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "98678863314-akersapbqduvtb1716jokoi8lf4816sq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.juliord24.nombreapp.sky_lovers",
+            "certificate_hash": "f355b97e75e9ef72980ad844a71419a69b429bc3"
+          }
+        },
+        {
+          "client_id": "98678863314-40rlvsef0m2t27l89iksb8pvvb4f0v6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBso4zAz2vCGh31Scqb4WzKgiQAylUuyh8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98678863314-40rlvsef0m2t27l89iksb8pvvb4f0v6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

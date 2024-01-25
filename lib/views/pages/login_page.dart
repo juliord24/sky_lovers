@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sky_lovers/controllers/auth_controller.dart';
@@ -19,17 +20,17 @@ class LoginPage extends StatelessWidget{
           children: [
             MaterialButton(
               child: const Text('Iniciar sesión con Google'),
-              onPressed: () {
+              onPressed: () async {
+                User? user = await AuthController().loginWithGoogle();
+                print(user?.displayName);
+              }
 
-                try{
-                  final user = AuthController().loginWithGoogle();
-                  if(user != null){
-                    print('Exito');
-                    }
-                } catch (e){
-                  print('Error: $e');
-                  }
-            }
+            ),
+            MaterialButton(
+              child: const Text('Cerrar sesion'),
+              onPressed: () {
+                AuthController().signOut();
+              }
             )
           ],
         ),
