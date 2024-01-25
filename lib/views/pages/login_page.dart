@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sky_lovers/controllers/auth_controller.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatelessWidget{
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -16,10 +17,19 @@ class LoginPage extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CupertinoButton(
-              child: const Text('Comienza a usar skyLovers'),
-              onPressed: (){
-  }
+            MaterialButton(
+              child: const Text('Iniciar sesión con Google'),
+              onPressed: () {
+
+                try{
+                  final user = AuthController().loginWithGoogle();
+                  if(user != null){
+                    print('Exito');
+                    }
+                } catch (e){
+                  print('Error: $e');
+                  }
+            }
             )
           ],
         ),
