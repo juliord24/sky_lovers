@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "98678863314",
+    "project_id": "skylovers-97e83",
+    "storage_bucket": "skylovers-97e83.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98678863314:android:b85d614cc351ccc05e440b",
+        "android_client_info": {
+          "package_name": "io.github.juliord24.nombreapp.sky_lovers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBso4zAz2vCGh31Scqb4WzKgiQAylUuyh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
