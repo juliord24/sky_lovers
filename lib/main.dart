@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sky_lovers/ui/routes/pages.dart';
+import 'package:sky_lovers/ui/theme/theme.dart';
 
 import 'firebase_options.dart';
 
@@ -23,10 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'skyLovers',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light,
       initialRoute:
           FirebaseAuth.instance.currentUser != null ? '/home' : '/login',
       getPages: Pages.pages,

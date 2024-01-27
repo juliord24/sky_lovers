@@ -21,9 +21,6 @@ class LoginView extends GetView<LoginController> {
               onPressed: controller.signInWithGoogle,
               child: const Text('Iniciar sesión con Google'),
             ),
-            MaterialButton(
-                onPressed: controller.signOut,
-                child: const Text('Cerrar sesion')),
           ],
         ),
       ),
