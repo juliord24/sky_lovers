@@ -1,12 +1,9 @@
 import 'package:get/get.dart';
-
-import '../controllers/login_controller.dart';
+import 'package:sky_lovers/modules/login/controllers/login_controller.dart';
 
 class LoginBinding extends Bindings {
-
   @override
   void dependencies() {
-    Get.lazyPut<LoginController>(() => LoginController());
-    Get.put(LoginController());
+    Get.lazyPut(() => LoginController());
   }
 }

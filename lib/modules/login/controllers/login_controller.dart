@@ -1,16 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sky_lovers/modules/login/views/login_page.dart';
+import 'package:sky_lovers/modules/login/views/login_view.dart';
 
-import '../../home/views/home_page.dart';
+import '../../home/views/home_view.dart';
 
-
-class LoginController extends GetxController{
-
+class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
-
 
   ///Inicia sesión con Google usando Firebase Auth y Google Sign In
   Future<User?> signInWithGoogle() async {
@@ -19,7 +16,7 @@ class LoginController extends GetxController{
       if (googleUser == null) return null;
 
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -27,12 +24,13 @@ class LoginController extends GetxController{
       );
 
       final UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);
       userCredential.user;
       swapPage();
     } catch (e) {
       throw Exception(e);
     }
+    return null;
   }
 
   ///Cierra sesión con Google usando Firebase Auth y Google Sign In
@@ -41,6 +39,7 @@ class LoginController extends GetxController{
     await _auth.signOut();
     swapPage();
   }
+
   ///Comprueba si el usuario está logueado o no
   bool isUserLogged() {
     if (_auth.currentUser != null) {
@@ -51,19 +50,20 @@ class LoginController extends GetxController{
   }
 
   ///Cambia la página de la aplicación dependiendo de si el usuario está logueado o no
-  void swapPage(){
-    if(isUserLogged()){
-      Get.off(const HomePage());
-    }else{
-      Get.off(const LoginPage());
+  void swapPage() {
+    if (isUserLogged()) {
+      Get.offNamed("/home");
+    } else {
+      Get.offNamed("/login");
     }
   }
+
   ///Devuelve la página de la aplicación dependiendo de si el usuario está logueado o no
-  returnPage(){
-    if(isUserLogged()){
-      return const HomePage();
-    }else{
-      return const LoginPage();
+  returnPage() {
+    if (isUserLogged()) {
+      return const HomeView();
+    } else {
+      return const LoginView();
     }
   }
 }
