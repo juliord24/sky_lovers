@@ -5,6 +5,7 @@ import 'package:sky_lovers/modules/sunset/views/sunset_view.dart';
 import '../../modules/home/views/home_view.dart';
 import '../../modules/login/bindings/login_binding.dart';
 import '../../modules/login/views/login_view.dart';
+import '../../modules/sunset/bindings/sunset_binding.dart';
 
 class Pages {
   static final pages = [
@@ -19,11 +20,13 @@ class Pages {
       bindings: [
         HomeBinding(),
         LoginBinding(),
+        SunsetBinding(),
       ],
     ),
     GetPage(
       name: '/sunset',
       page: () => const SunsetView(),
+      binding: SunsetBinding(),
     ),
   ];
 }
