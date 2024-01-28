@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:sky_lovers/modules/home/bindings/home_binding.dart';
-import 'package:sky_lovers/modules/sunset/views/sunset_view.dart';
+import 'package:sky_lovers/modules/sunset_sunrise/views/sunset_view.dart';
 
 import '../../modules/home/views/home_view.dart';
 import '../../modules/login/bindings/login_binding.dart';
 import '../../modules/login/views/login_view.dart';
-import '../../modules/sunset/bindings/sunset_binding.dart';
+import '../../modules/sunset_sunrise/bindings/sunset_sunrise_binding.dart';
+import '../../modules/sunset_sunrise/views/sunrise_view.dart';
 
 class Pages {
   static final pages = [
@@ -20,13 +21,18 @@ class Pages {
       bindings: [
         HomeBinding(),
         LoginBinding(),
-        SunsetBinding(),
+        SunsetSunriseBinding(),
       ],
     ),
     GetPage(
       name: '/sunset',
       page: () => const SunsetView(),
-      binding: SunsetBinding(),
+      binding: SunsetSunriseBinding(),
+    ),
+    GetPage(
+      name: '/sunrise',
+      page: () => const SunriseView(),
+      binding: SunsetSunriseBinding(),
     ),
   ];
 }

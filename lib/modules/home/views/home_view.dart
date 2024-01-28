@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sky_lovers/modules/home/controllers/home_controller.dart';
-import 'package:sky_lovers/modules/sunset/views/sunset_view.dart';
+import 'package:sky_lovers/modules/sunset_sunrise/views/sunrise_view.dart';
+
+import '../../sunset_sunrise/views/sunset_view.dart';
 
 ///Página principal de la aplicación
 class HomeView extends GetView<HomeController> {
@@ -19,6 +21,7 @@ class HomeView extends GetView<HomeController> {
           index: controller.currentIndex.value,
           children: const [
             SunsetView(),
+            SunriseView(),
             Center(
               child: Text('Ayuda'),
             ),
@@ -31,8 +34,12 @@ class HomeView extends GetView<HomeController> {
           onTap: controller.changePage,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.cloud),
+              icon: Icon(Icons.wb_sunny_outlined),
               label: 'Sunset',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.wb_sunny),
+              label: 'Sunrise',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.not_interested_rounded),
