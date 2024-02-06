@@ -6,13 +6,13 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.red,
       ),
     );
   }

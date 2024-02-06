@@ -13,15 +13,15 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Barra de navegación'),
+        centerTitle: false,
+        title: const Text('Sky Lovers'),
       ),
       body: Obx(() {
         return IndexedStack(
           index: controller.currentIndex.value,
           children: const [
-            SunsetView(),
             SunriseView(),
+            SunsetView(),
             Center(
               child: Text('Ayuda'),
             ),
@@ -35,11 +35,11 @@ class HomeView extends GetView<HomeController> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.wb_sunny_outlined),
-              label: 'Sunset',
+              label: 'Sunrise',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.wb_sunny),
-              label: 'Sunrise',
+              label: 'Sunset',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.not_interested_rounded),

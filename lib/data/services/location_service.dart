@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
-class LocationService extends GetxService {
+class LocationService {
   var permission = LocationPermission.denied;
 
   ///Contiene la lógica necesaria para obtener información geográfica del dispositivo del usuario
@@ -35,8 +32,6 @@ class LocationService extends GetxService {
           'Los permisos de ubicación están permanentemente denegados, no podemos solicitar permisos.');
     }
 
-
-
     // Cuando llegamos aquí, los permisos están otorgados y podemos
     // continuar accediendo a la posición del dispositivo.
     return await Geolocator.getCurrentPosition();
@@ -56,8 +51,7 @@ class LocationService extends GetxService {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.whileInUse ||
-          permission == LocationPermission.always) {
-      }
+          permission == LocationPermission.always) {}
     }
   }
 
