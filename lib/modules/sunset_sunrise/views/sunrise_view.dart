@@ -1,7 +1,11 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sky_lovers/ui/widgets/sunset_sunrise_background.dart';
 
+import '../../../ui/theme/theme.dart';
 import '../controllers/sunset_sunrise_controller.dart';
 
 class SunriseView extends GetView<SunsetSunriseController> {
@@ -9,40 +13,93 @@ class SunriseView extends GetView<SunsetSunriseController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-            color: Colors.blue,
-            alignment: Alignment.center,
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              const Gap(40),
-              Obx(() {
-                if (controller.sunriseHour.value == "") {
-                  return const CircularProgressIndicator();
-                } else {
-                  return Text(
-                    controller.sunriseHour.value,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                    ),
-                  );
-                }
-              }),
-              const Gap(20),
-              Obx(() {
-                if (controller.shownSunriseCloudCover.value == "") {
-                  return const CircularProgressIndicator();
-                } else {
-                  return Text(
-                    controller.shownSunriseCloudCover.value,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  );
-                }
-              }),
-            ])));
+    return Scaffold(body:
+    SunsetSunriseBackground(child: SingleChildScrollView(child: Obx(() {
+      if (controller.sunriseHour.value == "") {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            LoadingAnimationWidget.inkDrop(color: Colors.white, size: 80),
+            const Gap(60),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Gap(10),
+                Flexible(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText("El sol está en camino...",
+                          textStyle: AppTheme.animatedTextStyle,
+                          textAlign: TextAlign.center,
+                          speed: const Duration(milliseconds: 100)),
+                    ],
+                  ),
+                ),
+                const Gap(10),
+              ],
+            )
+          ],
+        );
+      } else {
+        return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Gap(30),
+                  Obx(() {
+                    return Text(
+                      controller.sunriseHour.value,
+                      style: AppTheme.hourTextStyle,
+                    );
+                  }),
+                  const Gap(50),
+                  const Text("Cielo:"),
+                  const Gap(5),
+                  Obx(() {
+                    return Text(
+                      controller.shownSunriseCloudCover.value,
+                      style: AppTheme.dynamicTextStyle,
+                    );
+                  }),
+                  const Gap(50),
+                  const Text("Humedad:"),
+                  const Gap(5),
+                  Obx(() {
+                    return Text(
+                      controller.shownSunriseHumidity.value,
+                      style: AppTheme.dynamicTextStyle,
+                    );
+                  }),
+                  const Gap(40),
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 60,
+                    color: AppTheme.dynamicTextStyle.color!,
+                  ),
+                  const Gap(30),
+                  const Text("El amanecer..."),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Gap(15),
+                      Obx(() {
+                        return Flexible(
+                            child: Text(
+                              controller.sunriseConclusion.value,
+                              style: AppTheme.dynamicTextStyle,
+                              textAlign: TextAlign.center,
+                            ));
+                      }),
+                      const Gap(15),
+                    ],
+                  )
+                ])
+         ;
+      }
+    })
+    )
+    ),
+    );
   }
 }

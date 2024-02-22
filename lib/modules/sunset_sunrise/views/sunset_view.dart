@@ -1,5 +1,10 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sky_lovers/ui/theme/theme.dart';
+import 'package:sky_lovers/ui/widgets/sunset_sunrise_background.dart';
 
 import '../controllers/sunset_sunrise_controller.dart';
 
@@ -8,63 +13,84 @@ class SunsetView extends GetView<SunsetSunriseController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("Sunset hour:"),
-          Obx(() {
-            // Verifica si sunsetHour es null
-            if (controller.sunsetHour.value == "") {
-              // Muestra un widget de carga
-              return const CircularProgressIndicator();
-            } else {
-              return Text(controller.sunsetHour.value);
-            }
-          }),
-          const Text("Cloud cover:"),
-          Obx(() {
-            // Verifica si cloudCover es null
-            if (controller.sunsetCloudCover.value == "") {
-              // Muestra un widget de carga
-              return const CircularProgressIndicator();
-            } else {
-              return Text(controller.sunsetCloudCover.value);
-            }
-          }),
-          const Text("Humidity:"),
-          Obx(() {
-            // Verifica si humidity es null
-            if (controller.sunsetHumidity.value == "") {
-              // Muestra un widget de carga
-              return const CircularProgressIndicator();
-            } else {
-              return Text(controller.sunsetHumidity.value);
-            }
-          }),
-          const Text("Precipitation probability:"),
-          Obx(() {
-            // Verifica si precipitation probability es null
-            if (controller.sunsetPrecipProb.value == "") {
-              // Muestra un widget de carga
-              return const CircularProgressIndicator();
-            } else {
-              return Text(controller.sunsetPrecipProb.value);
-            }
-          }),
-          const Text("Precipitation type:"),
-          Obx(() {
-            // Verifica si precipitation type es null
-            if (controller.sunsetPrecipType.value == "") {
-              // Muestra un widget de carga
-              return const CircularProgressIndicator();
-            } else {
-              return Text(controller.sunsetPrecipType.value);
-            }
-          })
-        ],
-      )),
+    return Scaffold(body:
+      SunsetSunriseBackground(child: SingleChildScrollView(child: Obx(() {
+        if (controller.sunsetHour.value == "") {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LoadingAnimationWidget.inkDrop(color: Colors.white, size: 80),
+              const Gap(60),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Gap(10),
+                  Flexible(
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText("El sol se está escondiendo...",
+                            textStyle: AppTheme.animatedTextStyle,
+                            textAlign: TextAlign.center,
+                            speed: const Duration(milliseconds: 100)),
+                      ],
+                    ),
+                  ),
+                  const Gap(10),
+                ],
+              )
+            ],
+          );
+        } else {
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Gap(30),
+                Obx(() {
+                  return Text(controller.sunsetHour.value,
+                      style: AppTheme.hourTextStyle);
+                }),
+                const Gap(50),
+                const Text("Cielo:"),
+                const Gap(5),
+                Obx(() {
+                  return Text(controller.shownSunsetCloudCover.value,
+                      style: AppTheme.dynamicTextStyle);
+                }),
+                const Gap(50),
+                const Text("Humedad:"),
+                const Gap(5),
+                Obx(() {
+                  return Text(controller.shownSunsetHumidity.value,
+                      style: AppTheme.dynamicTextStyle);
+                }),
+                const Gap(40),
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 60,
+                  color: AppTheme.dynamicTextStyle.color!,
+                ),
+                const Gap(30),
+                const Text("El atardecer..."),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Gap(15),
+                    Obx(() {
+                      return Flexible(
+                          child: Text(
+                        controller.sunsetConclusion.value,
+                        style: AppTheme.dynamicTextStyle,
+                        textAlign: TextAlign.center,
+                      ));
+                    }),
+                    const Gap(15),
+                  ],
+                )
+              ]);
+        }
+      }))),
     );
   }
 }

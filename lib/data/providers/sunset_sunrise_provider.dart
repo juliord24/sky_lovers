@@ -15,6 +15,8 @@ Future<SunsetSunriseModel> fetchWeatherData() async {
   final response = await http.get(Uri.parse(apiUrl));
 
   if (response.statusCode == 200) {
+    //pausa de 2 segundos para simular la carga y mostrar la animacion de carga
+    await Future.delayed(const Duration(seconds: 2));
     return SunsetSunriseModel.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load weather data');

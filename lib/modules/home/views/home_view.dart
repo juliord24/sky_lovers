@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:sky_lovers/modules/home/controllers/home_controller.dart';
 import 'package:sky_lovers/modules/sunset_sunrise/views/sunrise_view.dart';
@@ -13,37 +15,31 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
+        centerTitle: true,
         title: const Text('Sky Lovers'),
       ),
-      body: Obx(() {
-        return IndexedStack(
-          index: controller.currentIndex.value,
-          children: const [
-            SunriseView(),
-            SunsetView(),
-            Center(
-              child: Text('Ayuda'),
-            ),
-          ],
-        );
-      }),
+      body: PageView(
+        controller: controller.pageController,
+        onPageChanged: (index) {
+          controller.currentIndex.value = index;
+        },
+        children: const [
+          SunriseView(),
+          SunsetView(),
+        ],
+      ),
       bottomNavigationBar: Obx(() {
         return BottomNavigationBar(
           currentIndex: controller.currentIndex.value,
           onTap: controller.changePage,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.wb_sunny_outlined),
+              icon: Icon(FeatherIcons.sunrise, size: 20),
               label: 'Sunrise',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.wb_sunny),
+              icon: Icon(FeatherIcons.sunset, size: 20),
               label: 'Sunset',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.not_interested_rounded),
-              label: 'Help',
             )
           ],
         );

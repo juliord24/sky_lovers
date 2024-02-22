@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/sunset_sunrise_model.dart';
 import '../../../data/providers/sunset_sunrise_provider.dart';
@@ -28,6 +27,9 @@ class SunsetSunriseController extends GetxController {
   final RxString shownSunrisePrecipType = ''.obs;
   final RxString shownSunsetPrecipType = ''.obs;
 
+  final RxString sunsetConclusion = ''.obs;
+  final RxString sunriseConclusion = ''.obs;
+
   @override
   void onInit() async {
     super.onInit();
@@ -52,12 +54,19 @@ class SunsetSunriseController extends GetxController {
 
   void showData() {
     shownSunriseCloudCover.value = showSunriseCloudCover();
+    shownSunriseHumidity.value = showSunriseHumidity();
+    shownSunsetCloudCover.value = showSunsetCloudCover();
+    shownSunsetHumidity.value = showSunsetHumidity();
+    sunsetConclusion.value =
+        analyzeConditions(showSunsetCloudCover(), showSunsetHumidity());
+    sunriseConclusion.value =
+        analyzeConditions(showSunriseCloudCover(), showSunriseHumidity());
   }
 
   String getSunsetHour() {
     for (var day in sunsetSunriseModel.days) {
       if (day.datetime.day == DateTime.now().day) {
-        return day.sunset;
+        return formatTime(day.sunset);
       }
     }
     return '';
@@ -66,15 +75,23 @@ class SunsetSunriseController extends GetxController {
   String getSunriseHour() {
     for (var day in sunsetSunriseModel.days) {
       if (day.datetime.day == DateTime.now().day) {
-        return day.sunrise;
+        return formatTime(day.sunrise);
       }
     }
     return '';
   }
 
+  //Formatea la hora
+  String formatTime(String time) {
+    DateFormat inputFormat = DateFormat('HH:mm:ss');
+    DateFormat outputFormat = DateFormat('HH:mm');
+
+    DateTime dateTime = inputFormat.parse(time);
+    return outputFormat.format(dateTime);
+  }
+
   String getSunriseCloudCover() {
     for (var dia in sunsetSunriseModel.days) {
-      print("El dia es ${dia.datetime.day} y hoy es ${DateTime.now().day}");
       if (dia.datetime.day == DateTime.now().day) {
         for (var hora in dia.hours) {
           DateTime horaAmanecer = DateTime.parse('00000000 ${dia.sunrise}');
@@ -194,167 +211,131 @@ class SunsetSunriseController extends GetxController {
   }
 
   String showSunriseCloudCover() {
-    Random random = Random();
-    print("sunriseCloudCover: $sunriseCloudCover.value");
     num cloudCover = num.parse(sunriseCloudCover.value);
-    final List<String> cloudCoverMessagesLow = [
-      "El cielo está súper claro, ¡perfecto para un amanecer de postal!",
-      "Solo unas pocas nubecillas. ¡Prepárate para un sol radiante!",
-      "Casi nada de nubes hoy. El amanecer va a estar genial.",
-      "Casi despejado: el sol brilla fuerte, ¡un amanecer sin filtros!",
-      "Con tan pocas nubes, prepárate para un espectáculo de colores vivos.",
-      "Pocas nubes a la vista, el amanecer se muestra en todo su esplendor.",
-    ];
-    final List<String> cloudCoverMessagesMedium = [
-      "Un mix de nubes y claros, el amanecer se pone interesante.",
-      "Nubes aquí y allá. ¿Listo para un amanecer con estilo?",
-      "Mitad nubes, mitad cielo. El amanecer promete sorpresas.",
-      "Esos algodones en el cielo van a darle un toque mágico al amanecer.",
-      "Nubes medias, ¿sabes? Eso significa colores más intensos y dramáticos.",
-      "El sol jugueteando con las nubes, nos espera un amanecer de película."
-    ];
-    final List<String> cloudCoverMessagesHigh = [
-      "Con tantas nubes, el sol va a jugar al escondite.",
-      "Un cielo bastante nublado, pero el sol no se rinde.",
-      "Nubes por doquier, pero aún así, el amanecer tiene su encanto.",
-      "Muchas nubes, pero eso solo hace que los rayos del sol sean más espectaculares.",
-      "Con el cielo así de nublado, cada rayo de sol es un regalo visual.",
-      "Un amanecer más misterioso hoy, con las nubes creando un efecto difuminado."
-    ];
-    final List<String> cloudCoverMessagesVeryHigh = [
-      "El cielo está a tope de nubes, pero aún así, algo de luz se colará.",
-      "Un manto nuboso nos cubre, pero no perdamos la esperanza.",
-      "Hoy toca adivinar dónde está el sol, ¡un amanecer misterioso!",
-      "Amanecer cubierto, pero esos pequeños momentos en que el sol asoma serán únicos.",
-      "Un cielo lleno de nubes nos da un amanecer suave y difuso.",
-      "Con tanta nube, cada destello del sol se siente como un guiño especial.",
-    ];
-
     if (cloudCover <= 25) {
-      return cloudCoverMessagesLow[
-          random.nextInt(cloudCoverMessagesLow.length)];
+      return "Despejado";
     } else if (cloudCover > 25 && cloudCover <= 50) {
-      return cloudCoverMessagesMedium[
-          random.nextInt(cloudCoverMessagesMedium.length)];
+      return "Algunas";
     } else if (cloudCover > 50 && cloudCover <= 75) {
-      return cloudCoverMessagesHigh[
-          random.nextInt(cloudCoverMessagesHigh.length)];
+      return "Nublado";
     } else {
-      return cloudCoverMessagesVeryHigh[
-          random.nextInt(cloudCoverMessagesVeryHigh.length)];
+      return "Cubierto";
     }
   }
 
   String showSunsetCloudCover() {
-    Random random = Random();
-    num cloudCover = num.parse(sunriseCloudCover.value);
-    final List<String> cloudCoverMessagesLow = [
-      "Cielo despejado, atardecer brillante en el horizonte.",
-      "Pocas nubes, la luz del sol se filtra suavemente.",
-      "Claro y hermoso, el alba se presenta clara."
-    ];
-    final List<String> cloudCoverMessagesMedium = [
-      "Algunas nubes, un lienzo para un atardecer pintoresco.",
-      "Nubes esparcidas, esperemos un atardecer colorido.",
-      "Nubosidad parcial, un preludio a un atardecer vibrante."
-    ];
-    final List<String> cloudCoverMessagesHigh = [
-      "Cielo nublado, atisbos de luz entre las nubes.",
-      "Nubes densas, un atardecer suave y difuminado.",
-      "El cielo cubierto, el sol trata de asomarse."
-    ];
-    final List<String> cloudCoverMessagesVeryHigh = [
-      "Muy nublado, un amanecer tenue nos espera.",
-      "Cubierta completa, la luz se oculta tras el manto nuboso.",
-      "Un manto de nubes, esperando un claro para el sol."
-    ];
-
+    num cloudCover = num.parse(sunsetCloudCover.value);
     if (cloudCover <= 25) {
-      return cloudCoverMessagesLow[
-          random.nextInt(cloudCoverMessagesLow.length)];
+      return "Despejado";
     } else if (cloudCover > 25 && cloudCover <= 50) {
-      return cloudCoverMessagesMedium[
-          random.nextInt(cloudCoverMessagesMedium.length)];
+      return "Algunas";
     } else if (cloudCover > 50 && cloudCover <= 75) {
-      return cloudCoverMessagesHigh[
-          random.nextInt(cloudCoverMessagesHigh.length)];
+      return "Nublado";
     } else {
-      return cloudCoverMessagesVeryHigh[
-          random.nextInt(cloudCoverMessagesVeryHigh.length)];
+      return "Cubierto";
     }
   }
 
   String showSunriseHumidity() {
-    Random random = Random();
-    num humidity = double.parse(sunriseHumidity.value);
-    final List<String> humidityMessagesLow = [
-      "Aire seco, el amanecer será claro y nítido.",
-      "Poca humedad, visibilidad excelente para el sol naciente.",
-      "Seco y fresco, disfruta la salida del sol."
-    ];
-    final List<String> humidityMessagesMedium = [
-      "Moderada humedad, el amanecer podría traer un arcoiris.",
-      "Equilibrio perfecto para un amanecer agradable.",
-      "Humedad agradable, ideal para un paseo matutino."
-    ];
-    final List<String> humidityMessagesHigh = [
-      "El aire húmedo difumina el horizonte del amanecer.",
-      "Humedad presente, el amanecer se siente tropical.",
-      "Sensación húmeda, el rocío acompaña al amanecer."
-    ];
-    final List<String> humidityMessagesVeryHigh = [
-      "Muy húmedo, el amanecer trae consigo el orvallo.",
-      "Alta humedad, el sol lucha a través de la bruma.",
-      "El aire cargado preludia un amanecer húmedo y fresco."
-    ];
-
+    num humidity = num.parse(sunriseHumidity.value);
     if (humidity <= 25) {
-      return humidityMessagesLow[random.nextInt(humidityMessagesLow.length)];
+      return "Baja";
     } else if (humidity > 25 && humidity <= 50) {
-      return humidityMessagesMedium[
-          random.nextInt(humidityMessagesMedium.length)];
+      return "Moderada";
     } else if (humidity > 50 && humidity <= 75) {
-      return humidityMessagesHigh[random.nextInt(humidityMessagesHigh.length)];
+      return "Alta";
     } else {
-      return humidityMessagesVeryHigh[
-          random.nextInt(humidityMessagesVeryHigh.length)];
+      return "Muy alta";
     }
   }
 
   String showSunsetHumidity() {
-    Random random = Random();
-    num humidity = double.parse(sunriseHumidity.value);
-    final List<String> humidityMessagesLow = [
-      "Aire seco, el amanecer será claro y nítido.",
-      "Poca humedad, visibilidad excelente para el sol naciente.",
-      "Seco y fresco, disfruta la salida del sol."
-    ];
-    final List<String> humidityMessagesMedium = [
-      "Moderada humedad, el amanecer podría traer un arcoiris.",
-      "Equilibrio perfecto para un amanecer agradable.",
-      "Humedad agradable, ideal para un paseo matutino."
-    ];
-    final List<String> humidityMessagesHigh = [
-      "El aire húmedo difumina el horizonte del amanecer.",
-      "Humedad presente, el amanecer se siente tropical.",
-      "Sensación húmeda, el rocío acompaña al amanecer."
-    ];
-    final List<String> humidityMessagesVeryHigh = [
-      "Muy húmedo, el amanecer trae consigo el orvallo.",
-      "Alta humedad, el sol lucha a través de la bruma.",
-      "El aire cargado preludia un amanecer húmedo y fresco."
-    ];
-
+    num humidity = num.parse(sunsetHumidity.value);
     if (humidity <= 25) {
-      return humidityMessagesLow[random.nextInt(humidityMessagesLow.length)];
+      return "Baja";
     } else if (humidity > 25 && humidity <= 50) {
-      return humidityMessagesMedium[
-          random.nextInt(humidityMessagesMedium.length)];
+      return "Moderada";
     } else if (humidity > 50 && humidity <= 75) {
-      return humidityMessagesHigh[random.nextInt(humidityMessagesHigh.length)];
+      return "Alta";
     } else {
-      return humidityMessagesVeryHigh[
-          random.nextInt(humidityMessagesVeryHigh.length)];
+      return "Muy alta";
     }
+  }
+
+  String analyzeConditions(String cloudCover, String humidity) {
+    String analysis = "";
+
+    // Combinaciones para Despejado
+    if (cloudCover == "Despejado") {
+      if (humidity == "Baja") {
+        analysis =
+            "tendrá tonos intensamente dorados y rojizos, creando un espectáculo vibrante.";
+      } else if (humidity == "Moderada") {
+        analysis = "ofrecerá colores cálidos con un toque suave y acogedor.";
+      } else if (humidity == "Alta") {
+        analysis =
+            "presentará tonos más suaves y difuminados, con un ambiente sereno.";
+      } else {
+        // Muy alta
+        analysis =
+            "se verá con tonos pálidos y delicados, ofreciendo una vista tranquila.";
+      }
+    }
+
+    // Combinaciones para Algunas nubes
+    else if (cloudCover == "Algunas") {
+      if (humidity == "Baja") {
+        analysis =
+            "creará un juego dinámico de luces y sombras, resaltando los tonos anaranjados y rosados.";
+      } else if (humidity == "Moderada") {
+        analysis =
+            "se verá con un contraste de colores suaves y nítidos, ofreciendo un paisaje encantador.";
+      } else if (humidity == "Alta") {
+        analysis =
+            "mostrará una paleta de colores suaves y armoniosos, creando un ambiente calmado.";
+      } else {
+        // Muy alta
+        analysis =
+            "tendrá un aspecto difuminado, con colores delicados y un toque melancólico.";
+      }
+    }
+
+    // Combinaciones para Nublado
+    else if (cloudCover == "Nublado") {
+      if (humidity == "Baja") {
+        analysis =
+            "proyectará tonos sutiles, con breves momentos de luz que se filtran a través de las nubes.";
+      } else if (humidity == "Moderada") {
+        analysis =
+            "mostrará colores suaves y dispersos, con una luz tenue y envolvente.";
+      } else if (humidity == "Alta") {
+        analysis = "se verá con una gama de grises y azules.";
+      } else {
+        // Muy alta
+        analysis =
+            "tendrá tonos muy suaves y homogéneos, con un aspecto más sombrío.";
+      }
+    }
+
+    // Combinaciones para Cubierto
+    else {
+      // Cubierto
+      if (humidity == "Baja") {
+        analysis =
+            "tendrá breves destellos de colores cálidos entre las nubes, ofreciendo un respiro visual.";
+      } else if (humidity == "Moderada") {
+        analysis =
+            "se verá con colores apagados, pero con posibles momentos de luz suave.";
+      } else if (humidity == "Alta") {
+        analysis =
+            "presentará un aspecto uniformemente gris, con muy poca variación de color.";
+      } else {
+        // Muy alta
+        analysis =
+            "tendrá un aspecto monocromático y muy homogéneo, sin apenas variaciones de color.";
+      }
+    }
+
+    return analysis;
   }
 }
