@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:sky_lovers/modules/favorites/views/favorites_view.dart';
 import 'package:sky_lovers/modules/home/controllers/home_controller.dart';
+import 'package:sky_lovers/modules/settings/views/settings_view.dart';
 import 'package:sky_lovers/modules/sunset_sunrise/views/sunrise_view.dart';
 
 import '../../sunset_sunrise/views/sunset_view.dart';
@@ -26,21 +28,32 @@ class HomeView extends GetView<HomeController> {
         children: const [
           SunriseView(),
           SunsetView(),
+          FavoritesView(),
+          SettingsView(),
         ],
       ),
       bottomNavigationBar: Obx(() {
         return BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: controller.currentIndex.value,
           onTap: controller.changePage,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(FeatherIcons.sunrise, size: 20),
-              label: 'Sunrise',
+              label: 'Amanecer',
             ),
             BottomNavigationBarItem(
               icon: Icon(FeatherIcons.sunset, size: 20),
-              label: 'Sunset',
-            )
+              label: 'Atardecer',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FeatherIcons.heart, size: 20),
+              label: 'Favoritos',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FeatherIcons.settings, size: 20),
+              label: 'Ajustes',
+            ),
           ],
         );
       }),

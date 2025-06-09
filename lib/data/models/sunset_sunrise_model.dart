@@ -298,7 +298,8 @@ class Hour {
   factory Hour.fromJson(Map<String, dynamic> json) => Hour(
         datetime: json["datetime"],
         datetimeEpoch: json["datetimeEpoch"],
-        conditions: conditionsValues.map[json["conditions"]]!,
+        conditions:
+            conditionsValues.map[json["conditions"]] ?? Conditions.empty,
         icon: iconValues.map[json["icon"]] ?? Icon.empty,
         temp: json["temp"]?.toDouble(),
         feelslike: json["feelslike"]?.toDouble(),

@@ -23,7 +23,7 @@ class AppTheme {
   static final TextStyle dynamicTextStyle = TextStyle(
     color: Colors.white, // Gris azulado claro, menos prominente
     fontSize: 23, // Tamaño moderado para diferenciar de texto estático
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.bold,
     fontFamily: GoogleFonts.nunito().fontFamily,
   );
 

@@ -6,6 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sky_lovers/ui/theme/theme.dart';
 import 'package:sky_lovers/ui/widgets/sunset_sunrise_background.dart';
 
+import '../../favorites/controllers/favorites_controller.dart';
 import '../controllers/sunset_sunrise_controller.dart';
 
 class SunsetView extends GetView<SunsetSunriseController> {
@@ -13,8 +14,11 @@ class SunsetView extends GetView<SunsetSunriseController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
-      SunsetSunriseBackground(child: SingleChildScrollView(child: Obx(() {
+    final FavoritesController favoritesController = Get.put(FavoritesController());
+    final DateTime now = DateTime.now();
+    SunriseSunset sunset;
+    return Scaffold(
+      body: SunsetSunriseBackground(child: SingleChildScrollView(child: Obx(() {
         if (controller.sunsetHour.value == "") {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,6 +46,12 @@ class SunsetView extends GetView<SunsetSunriseController> {
             ],
           );
         } else {
+          sunset = SunriseSunset(
+            id: 'sunset_${now.year}_${now.month}_${now.day}',
+            type: 'sunset',
+            time: controller.sunsetHour.value, // Convertido a String
+            date: now,
+          );
           return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +97,21 @@ class SunsetView extends GetView<SunsetSunriseController> {
                     }),
                     const Gap(15),
                   ],
-                )
+                ),
+                const Gap(30),
+                Obx(() {
+                  final isFavorite = favoritesController.isFavorite(sunset);
+                  return IconButton(
+                    icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+                    onPressed: () {
+                      if (isFavorite) {
+                        favoritesController.removeFavorite(sunset);
+                      } else {
+                        favoritesController.addFavorite(sunset);
+                      }
+                    },
+                  );
+                }),
               ]);
         }
       }))),

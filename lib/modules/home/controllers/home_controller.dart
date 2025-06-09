@@ -5,6 +5,7 @@ class HomeController extends GetxController {
   final RxInt currentIndex = 0.obs;
 
   PageController pageController = PageController();
+
   ///Cambia la página actual
   void changePage(int index) {
     currentIndex.value = index;

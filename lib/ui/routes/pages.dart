@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
+import 'package:sky_lovers/modules/favorites/bindings/favorites_binding.dart';
+import 'package:sky_lovers/modules/favorites/views/favorites_view.dart';
 import 'package:sky_lovers/modules/home/bindings/home_binding.dart';
+import 'package:sky_lovers/modules/settings/bindings/settings_binding.dart';
+import 'package:sky_lovers/modules/settings/views/settings_view.dart';
 import 'package:sky_lovers/modules/sunset_sunrise/views/sunset_view.dart';
 
 import '../../modules/home/views/home_view.dart';
@@ -22,17 +26,27 @@ class Pages {
         HomeBinding(),
         LoginBinding(),
         SunsetSunriseBinding(),
+        SettingsBinding(),
+        FavoritesBinding(),
       ],
     ),
+    GetPage(name: '/sunset', page: () => const SunsetView(), bindings: [
+      SunsetSunriseBinding(),
+      FavoritesBinding(),
+    ]),
+    GetPage(name: '/sunrise', page: () => const SunriseView(), bindings: [
+      SunsetSunriseBinding(),
+      FavoritesBinding(),
+    ]),
     GetPage(
-      name: '/sunset',
-      page: () => const SunsetView(),
-      binding: SunsetSunriseBinding(),
+      name: '/settings',
+      page: () => const SettingsView(),
+      binding: SettingsBinding(),
     ),
     GetPage(
-      name: '/sunrise',
-      page: () => const SunriseView(),
-      binding: SunsetSunriseBinding(),
-    ),
+      name: '/favorites',
+      page: () => const FavoritesView(),
+      binding: FavoritesBinding(),
+    )
   ];
 }
